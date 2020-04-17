@@ -59,13 +59,13 @@ spec:
     metadata:
       labels:
         app: coffee-shop
+        version: v1
     spec:
       containers:
       - name: coffee-shop
         image: de.icr.io/cee-<your-name>-workshop/coffee-shop:1
         ports:
         - containerPort: 9080
-      restartPolicy: Always
 ----
 
 This definition looks similar to the pod snippet before, but it encapsulates the pod as a template, from which it'll create the pod replicas.
@@ -111,6 +111,7 @@ spec:
     metadata:
       labels:
         app: coffee-shop
+        version: v1
     spec:
       containers:
       - name: coffee-shop
@@ -125,7 +126,6 @@ spec:
           exec:
             command: ["sh", "-c", "curl -s http://localhost:9080/health | grep -q coffee-shop"]
           initialDelaySeconds: 40
-      restartPolicy: Always
 ----
 
 We create YAML files with this content under the `deployment/` folders of both microservice projects.

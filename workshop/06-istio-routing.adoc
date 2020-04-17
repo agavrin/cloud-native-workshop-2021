@@ -52,7 +52,6 @@ spec:
           exec:
             command: ["sh", "-c", "curl -s http://localhost:9080/health | grep -q coffee-shop"]
           initialDelaySeconds: 40
-    restartPolicy: Always
 ----
 
 Pods managed by this deployment will receive the labels `app: coffee-shop` and `version: v2`.
