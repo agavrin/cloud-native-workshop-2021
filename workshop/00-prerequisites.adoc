@@ -97,7 +97,6 @@ ibmcloud ks cluster create classic \
 ----
 
 NOTE: If the command fails because you have existing VLANs in that zone, you need to specify the VLANs in your command:
-+ 
 ----
 ibmcloud ks vlans --zone fra02
 ibmcloud ks cluster create classic \
