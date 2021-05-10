@@ -3,7 +3,10 @@ package com.sebastian_daschner.coffee_shop.entity;
 import java.util.stream.Stream;
 
 public enum BrewLocation {
-    DACH,
+    Germany,
+		Russia,
+		Poland,
+		France,
     CEE;
 
     public static BrewLocation of(String string) {
