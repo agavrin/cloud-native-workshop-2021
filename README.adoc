@@ -6,7 +6,6 @@ It comprises two applications, _coffee-shop_ and _barista_, built by Java EE and
 
 The contents of the workshop start with the link:workshop/00-prerequisites.adoc[prerequisites].
 
-
 === Finish
 
 After you've finished the walk-through you can compare your result with the https://github.com/sdaschner/cloud-native-workshop-02-2020/tree/finish[finished version^].
