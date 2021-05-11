@@ -18,12 +18,14 @@ Under `coffee-shop/`, we create a `Dockerfile` with the following contents:
 
 [source,Dockerfile]
 ----
-FROM open-liberty:20.0.0.3-full-java8-openj9
+cat <<EOF >Dockerfile
+FROM open-liberty:21.0.0.4-full-java8-openj9
 
 COPY liberty/extension /liberty/usr/extension/
 COPY liberty/server.xml /config/
 
 COPY target/coffee-shop.war /config/dropins/
+EOF
 ----
 
 The image declaration after `FROM` specifies the base image for our application.
@@ -42,12 +44,14 @@ Now, we create a similar `Dockerfile` for the barista application, under `barist
 
 [source,Dockerfile]
 ----
-FROM open-liberty:20.0.0.3-full-java8-openj9
+cat <<EOF >Dockerfile
+FROM open-liberty:21.0.0.4-full-java8-openj9
 
 COPY liberty/extension /liberty/usr/extension/
 COPY liberty/server.xml /config/
 
 COPY target/barista.war /config/dropins/
+EOF
 ----
 
 
@@ -55,11 +59,17 @@ COPY target/barista.war /config/dropins/
 
 In order to build the images, we issue the following Docker command: `docker build -t <image>:<tag> .` (including the dot at the end).
 
+Let's setup a variable to have your name, to be used as unique identifier, also provide unique port number:
+----
+export NAME=<yourname>
+export PORT=9080
+----
+
 For the coffee-shop application this looks as follows:
 
 ----
 cd coffee-shop/
-docker build -t de.icr.io/cee-<your-name>-workshop/coffee-shop:1 .
+docker build -t de.icr.io/cee-$NAME-workshop/coffee-shop:1 .
 ----
 
 The image name, here `de.icr.io/cee-<your-name>-workshop/coffee-shop:1`, implicitly contains the location of the image registry, image name, and version (or tag).
@@ -71,7 +81,7 @@ Again, we repeat this step for the barista application:
 
 ----
 cd ../barista/
-docker build -t de.icr.io/cee-<your-name>-workshop/barista:1 .
+docker build -t de.icr.io/cee-$NAME-workshop/barista:1 .
 ----
 
 Congratulations, now we have two images stored locally, for the coffee-shop and barista applications that we can now run as Docker containers!
@@ -95,13 +105,13 @@ We start our containers as follows:
 docker run --rm -d \
   --name barista \
   --network dkrnet \
-  de.icr.io/cee-<your-name>-workshop/barista:1
+  de.icr.io/cee-$NAME-workshop/barista:1
 
 docker run --rm -d \
   --name coffee-shop \
   --network dkrnet \
-  -p 9080:9080 \
-  de.icr.io/cee-<your-name>-workshop/coffee-shop:1
+  -p $PORT:9080 \
+  de.icr.io/cee-$NAME-workshop/coffee-shop:1
 ----
 
 These commands run our two applications as Docker containers.
@@ -151,7 +161,7 @@ However, if we want these changes to be included in our running containers, we n
 After the applications have been started, we should be able to access the coffee shop via the local port `9080` and the default MicroProfile health resource:
 
 ----
-curl localhost:9080/health -i
+curl localhost:$PORT/health -i
 ----
 
 This accesses the health check resource and will hopefully give you a successful HTTP response.
@@ -163,7 +173,7 @@ The `-i` flag causes the HTTP response headers to be printed.
 Now, we can finally ask for the coffee orders:
 
 ----
-curl localhost:9080/coffee-shop/resources/orders
+curl localhost:$PORT/coffee-shop/resources/orders
 ----
 
 This will give us the coffee orders that are in the system returned as JSON.
@@ -175,7 +185,7 @@ If we have a look at the JAX-RS resource in the coffee-shop application, we can 
 Using `curl` this looks as follows:
 
 ----
-curl localhost:9080/coffee-shop/resources/orders -i -XPOST \
+curl localhost:$PORT/coffee-shop/resources/orders -i -XPOST \
   -H 'Content-Type: application/json' \
   -d '{"type":"Espresso"}'
 ----
@@ -197,8 +207,8 @@ Then we can later pull them from any environment, like a managed Kubernetes clus
 We push our Docker images with the following commands:
 
 ----
-docker push de.icr.io/cee-<your-name>-workshop/coffee-shop:1
-docker push de.icr.io/cee-<your-name>-workshop/barista:1
+docker push de.icr.io/cee-$NAME-workshop/coffee-shop:1
+docker push de.icr.io/cee-$NAME-workshop/barista:1
 ----
 
 You will notice, that the second `push` commands runs much faster and outputs that almost all layers already exist in the remote repository.

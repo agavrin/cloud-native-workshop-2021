@@ -29,6 +29,7 @@ We'll enhance our coffee-shop virtual service rules with a timeout of 1 second:
 
 [source,yaml]
 ----
+cat <<EOF >coffee-shop-virtualservice.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -47,6 +48,7 @@ spec:
         subset: v1
     timeout: 1s
 ---
+EOF
 ----
 
 NOTE: The `timeout` definition is contained in a specific route YAML object and will only be taken into account on that very rule.
@@ -68,6 +70,7 @@ We modify the barista virtual service to add a 3 seconds delay for 50% of the re
 
 [source,yaml]
 ----
+cat <<EOF >barista-service.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -85,6 +88,7 @@ spec:
         fixedDelay: 3s
         percent: 50
 ---
+EOF
 ----
 
 If we apply this updated resource to the cluster, we will notice that some of the connections will in fact fail, after roughly 1 second.
@@ -92,7 +96,7 @@ We don't see any request taking the whole 3 seconds, due to the timeout on the c
 
 ----
 while true; do
-curl <ip-address>:<node-port>/coffee-shop/resources/orders -i -XPOST \
+curl $URL/coffee-shop/resources/orders -i -XPOST \
   -H 'Content-Type: application/json' \
   -d '{"type":"Espresso"}' \
   | grep HTTP

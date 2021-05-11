@@ -17,8 +17,8 @@ The applications are deployed to Open Liberty, an open-source application server
 To get started, clone the Git repository and use the projects that are provided inside:
 
 ----
-git clone https://github.com/sdaschner/cloud-native-workshop-02-2020
-cd cloud-native-workshop-02-2020/
+git clone https://github.com/agavrin/cloud-native-workshop-2021
+cd cloud-native-workshop-2021/
 ----
 
 

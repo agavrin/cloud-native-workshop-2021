@@ -157,6 +157,13 @@ Check that all pods are running before continuing.
 kubectl get pod -n istio-system
 ----
 
+Install addons:
+----
+cd /opt/istio-1.9.4/
+kubectl apply -f samples/addons
+kubectl rollout status deployment/kiali -n istio-system
+----
+
 We can verify our Istio installation as follows:
 
 ----
@@ -165,13 +172,13 @@ istioctl verify-install -f generated-manifest.yaml
 ----
 
 The result of the second command (last 3 lines) looks like this:
- 
+
 ----
 Checked 23 crds
 Checked 9 Istio Deployments
 Istio is installed successfully
 ----
- 
+
 We then enable the automatic sidecar injection:
 
 ----
@@ -200,7 +207,8 @@ You are targeting region 'eu-central', the registry is 'de.icr.io'.
 We use the CLI to create a unique namespace in the Container Registry service (`cr`) for our workshop:
 
 ----
-ibmcloud cr namespace-add cee-<your-name>-workshop
+export NAME=<your-name>
+ibmcloud cr namespace-add cee-$NAME-workshop
 ibmcloud cr namespaces
 ----
 
@@ -208,8 +216,8 @@ In order to test our new registry namespace, we pull a public image, re-tag it f
 
 ----
 docker pull hello-world
-docker tag hello-world de.icr.io/cee-<your-name>-workshop/hello-world:1
-docker push de.icr.io/cee-<your-name>-workshop/hello-world:1
+docker tag hello-world de.icr.io/cee-$NAME-workshop/hello-world:1
+docker push de.icr.io/cee-$NAME-workshop/hello-world:1
 ----
 
 Let's see whether our image is now in the private registry:
@@ -226,7 +234,7 @@ This is important to take into consideration, otherwise the examples won't work 
 If you want to try out the example locally, you have to create a Docker network similar to the following:
 
 ----
-docker network create --subnet=192.168.42.0/24 dkrnet
+docker network create dkrnet
 ----
 
 Now, we've finished all preparations.

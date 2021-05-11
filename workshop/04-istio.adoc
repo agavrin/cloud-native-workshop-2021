@@ -16,10 +16,11 @@ We place the following files in the same directories as the Kubernetes definitio
 
 === Virtual Service
 
-We create an Istio virtual service for the barista application:
+We create an Istio virtual service for the *barista* application:
 
 [source,yaml]
 ----
+cat <<EOF >barista-routing.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -33,6 +34,7 @@ spec:
         host: barista
         subset: v1
 ---
+EOF
 ----
 
 A virtual service defines the routing rules for a service that is part of the mesh.
@@ -49,6 +51,7 @@ We create a destination rule for the barista application which defines the subse
 
 [source,yaml]
 ----
+cat <<EOF >>barista-routing.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
@@ -60,6 +63,7 @@ spec:
     labels:
       version: v1
 ---
+EOF
 ----
 
 The subset defines that pods that contain the desired label, here `version` are considered to be part of the subset.
@@ -83,6 +87,7 @@ We create an Istio routing definition with the following contents to define a ga
 
 [source,yaml]
 ----
+cat <<EOF >coffee-shop-gateway.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
@@ -98,6 +103,7 @@ spec:
     hosts:
     - "*"
 ---
+EOF
 ----
 
 The gateway specifies the wildcard host (`*`) which matches all host names or IP addresses.
@@ -106,6 +112,7 @@ This will be part of the coffee-shop's virtual service specification:
 
 [source,yaml]
 ----
+cat <<EOF >coffee-shop-virtualservice.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -123,6 +130,7 @@ spec:
           number: 9080
         subset: v1
 ---
+EOF
 ----
 
 That routing now looks slightly different.
@@ -130,10 +138,11 @@ Since we define a specific gateway, only traffic from that gateway will be route
 
 The HTTP routing rule also requires us the specify the port number, since the incoming traffic originated from a different port number (`80`).
 
-The following contents define the resource for the barista destination rule, which looks similar to the barista's.
+The following contents define the resource for the coffe-shop destination rule, which looks similar to the barista's.
 
 [source,yaml]
 ----
+cat <<EOF >coffee-shop-destinationrule.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
@@ -145,6 +154,7 @@ spec:
     labels:
       version: v1
 ---
+EOF
 ----
 
 ==== Accessing our applications
@@ -170,22 +180,23 @@ kubectl get services -n istio-system istio-ingressgateway --template '{{range .s
 As a reminder, as seen in the last section, we'll retrieve the node IP address with one of the following commands.
 
 ----
-ibmcloud ks workers cloud-native
+ibmcloud ks workers --cluster cloud-native
 ----
 
 If you have the `jq` CLI tool installed, you can also directly extract the IP address by invoking:
 
 ----
-ibmcloud ks workers cloud-native --json | yq -r '.[0].publicIP'
+ibmcloud ks workers --cluster cloud-native --json | jq -r '.[0].publicIP'
 ----
 ====================
 
 We can then access the service using the node IP address and the node port of the `istio-ingressgateway` service:
 
 ----
-curl <ip-address>:<node-port>/health -i
+export URL=<IP>:<PORT>
+curl $URL/health | jq
 ...
-curl <ip-address>:<node-port>/coffee-shop/resources/orders -i
+curl $URL/coffee-shop/resources/orders -i
 ----
 
 This scenario works completely without the Kubernetes ingress resource.
@@ -194,7 +205,7 @@ Now, only the Istio resources would be required, besides the deployments and ser
 We can similarly use the `/orders` resource to create new coffee orders:
 
 ----
-curl <ip-address>:<node-port>/coffee-shop/resources/orders -i -XPOST \
+curl $URL/coffee-shop/resources/orders -i -XPOST \
   -H 'Content-Type: application/json' \
   -d '{"type":"Espresso"}'
 ----

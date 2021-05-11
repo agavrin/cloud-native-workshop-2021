@@ -16,12 +16,31 @@ Rather, we specifically want two distinct versions to be available for a longer 
 Therefore, we make a change in the coffee-shop application to create a new version.
 The orders resource currently returns the coffee type in all-caps, since that is the name of the `CoffeeType` enum.
 We now change the Java code in the `OrdersResource` class to output the coffee type in lower case.
+
+----
+private JsonObject buildOrder(CoffeeOrder order) {
+        return Json.createObjectBuilder()
+                .add("type", order.getType().name().toLowerCase())
+                .add("status", order.getStatus().name())
+                .add("_self", buildUri(order).toString())
+                .build();
+    }
+----
+
+----
+export NAME=<your name>
+mvn package
+docker build -t de.icr.io/cee-$NAME-workshop/coffee-shop:2 .
+docker push de.icr.io/cee-$NAME-workshop/coffee-shop:2
+----
+
 Once we've re-built the Maven project, we build the coffee-shop Docker image, now with name `coffee-shop:2`.
 
 We create a new deployment definition that will deploy our new coffee-shop application, with and leave the previous one untouched:
 
 [source,yaml]
 ----
+cat <<EOF >coffee-shop-v2.yaml
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -40,7 +59,7 @@ spec:
     spec:
       containers:
       - name: coffee-shop
-        image: de.icr.io/cee-<your-name>-workshop/coffee-shop:2
+        image: de.icr.io/cee-$NAME-workshop/coffee-shop:2
         imagePullPolicy: Always
         ports:
         - containerPort: 9080
@@ -52,6 +71,7 @@ spec:
           exec:
             command: ["sh", "-c", "curl -s http://localhost:9080/health | grep -q coffee-shop"]
           initialDelaySeconds: 40
+EOF
 ----
 
 Pods managed by this deployment will receive the labels `app: coffee-shop` and `version: v2`.
@@ -72,6 +92,7 @@ To add a second version of our coffee-shop service we enhance the coffee-shop de
 
 [source,yaml]
 ----
+cat <<EOF >coffee-shop-destinationrule.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
@@ -85,6 +106,7 @@ spec:
   - name: v2
     labels:
       version: v2
+EOF
 ----
 
 We apply the updated destination rule to the cluster.
@@ -99,6 +121,7 @@ We enhance the routing rule to route to subset `v2` as well, but only for traffi
 
 [source,yaml]
 ----
+cat <<EOF >coffee-shop-virtualservice.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -126,6 +149,7 @@ spec:
           number: 9080
         subset: v1
 ---
+EOF
 ----
 
 The newly introduce rule will route the traffic from Firefox browsers to all instances that are contained in the `v2` service subset and leave the rest untouched, that is, everything else still routes to the `v1` subset.
@@ -135,12 +159,12 @@ If we apply these changes to the cluster, we can now see a different behavior fo
 Similarly, we can simulate that behavior from the command line, if we pass a corresponding header to `curl`:
 
 ----
-curl <ip-address>:<node-port>/coffee-shop/resources/orders -i -XPOST \
+curl $URL/coffee-shop/resources/orders -i -XPOST \
   -H 'User-agent: Mozilla/5.0 (X11; Linux x86_64; rv:62.0) Gecko/20100101 Firefox/62.0' \
   -H 'Content-Type: application/json' \
   -d '{"type":"Espresso"}'
 
-curl <ip-address>:<node-port>/coffee-shop/resources/orders \
+curl $URL/coffee-shop/resources/orders \
   -H 'User-agent: Mozilla/5.0 (X11; Linux x86_64; rv:62.0) Gecko/20100101 Firefox/62.0'
 ----
 
@@ -152,6 +176,7 @@ To begin incrementally routing traffic to the newer version of the coffee-shop s
 
 [source,yaml]
 ----
+cat <<EOF >coffee-shop-virtualservice.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -176,6 +201,7 @@ spec:
         subset: v1
       weight: 70
 ---
+EOF
 ----
 
 In this modified rule, the routed traffic is split between the two subsets of the coffee-shop service (70% to `v1` and 30% to `v2`).
