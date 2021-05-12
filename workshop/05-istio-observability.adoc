@@ -109,8 +109,3 @@ We navigate our browser to http://localhost:16686, select `istio-ingressgateway`
 If we examine the correct traces, we can see that our coffee-shop application synchronously and asynchronously connects to the barista backend.
 
 In the link:06-istio-routing.adoc[next section] we'll see how we instruct Istio to route our mesh traffic according to certain criteria.
-
-
-----
-ssh -L 10001:localhost:10001 -L 20001:localhost:20001 -L 30001:localhost:30001 root@158.177.16.139
-----

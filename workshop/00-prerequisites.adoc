@@ -15,9 +15,13 @@ As prerequisites to perform the workshop, you need to have the following tools i
 
 To verify, run the following commands in your terminal (or on the VM provided to you by the workshop administrator):
 - `git version`
+
 - `curl -iL https://www.ibm.com`
+
 - `docker run --rm hello-world`
+
 - `kubectl version` (client version is relevant)
+
 - `istioctl version` (client version is relevant)
 
 === IBM Cloud access
@@ -28,11 +32,11 @@ image::images/docs.gif[Documentation install CLI]
 
 Open a browser window and navigate to https://cloud.ibm.com/registration.
 
-image::images/registration.png[Registration page]
+image::images/registration.jpg[Registration page]
 
-Fill in the registration form and follow the link in the validation email when it arrives.
+Fill in the registration form and paste the code from the validation email when it arrives.
 
-image::images/email.png[Validation email]
+image::images/email.jpg[Validation email]
 
 Then you can https://cloud.ibm.com/login[Login into IBM Cloud^] using the account credentials you have registered.
 
@@ -43,7 +47,7 @@ You can use this type once you have entered your credit card or a corresponding 
 ==== IBM Cloud CLI
 
 We log into the IBM Cloud CLI tool: `ibmcloud login`.
-If you have a federated account, include the `--sso` flag: `ibmcloud login --sso`.
+Or you may use browser token to login, for that include the `--sso` flag: `ibmcloud login --sso`.
 
 Create an API key to access the IBM Cloud CLI more conveniently.
 
