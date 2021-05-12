@@ -9,18 +9,16 @@ As prerequisites to perform the workshop, you need to have the following tools i
 - https://docs.docker.com/install/[docker^]
 - https://kubernetes.io/docs/tasks/tools/install-kubectl/[kubectl^]
 - https://cloud.ibm.com/docs/home/tools[IBM Cloud CLI^], including plugins kubernetes-service and container-registry
-- https://istio.io/docs/setup/getting-started/#download[istioctl (version 1.4.0)^] +
-    but use ISTIO_VERSION 1.4.0: `curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.4.0 sh -`
+- https://istio.io/docs/setup/getting-started/#download[istioctl^] +
 
 === Verify
 
-To verify, run the following commands in your terminal:
+To verify, run the following commands in your terminal (or on the VM provided to you by the workshop administrator):
 - `git version`
 - `curl -iL https://www.ibm.com`
 - `docker run --rm hello-world`
 - `kubectl version` (client version is relevant)
 - `istioctl version` (client version is relevant)
-
 
 === IBM Cloud access
 

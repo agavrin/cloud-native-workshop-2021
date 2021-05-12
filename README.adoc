@@ -1,6 +1,6 @@
 == Enterprise Coffee
 
-This is the coffee shop example project for the hands-on-lab: _Containerizing Java for the clouds_
+This is the coffee shop example project for the hands-on-lab: _Build Your Microservices workshop_
 
 It comprises two applications, _coffee-shop_ and _barista_, built by Java EE and MicroProfile, which are deployed to a Kubernetes and Istio cluster.
 
@@ -8,4 +8,4 @@ The contents of the workshop start with the link:workshop/00-prerequisites.adoc[
 
 === Finish
 
-After you've finished the walk-through you can compare your result with the https://github.com/sdaschner/cloud-native-workshop-02-2020/tree/finish[finished version^].
+After you've finished the walk-through you can compare your result with the https://github.com/agavrin/cloud-native-workshop-2021/tree/finish[finished version^].
