@@ -52,7 +52,7 @@ Or you may use browser token to login, for that include the `--sso` flag: `ibmcl
 Create an API key to access the IBM Cloud CLI more conveniently.
 
 ----
-ibmcloud iam api-key-create cloud-native-starter \
+ibmcloud iam api-key-create mycluster-free-starter \
   -d "cloud-native-starter" \
   --file cloud-native-starter.json
 cat cloud-native-starter.json
@@ -85,14 +85,14 @@ For a Free cluster use the following command:
 
 ----
 ibmcloud ks cluster create classic  \
-  --name cloud-native
+  --name mycluster-free
 ----
 
 For a standard cluster, in standard setting with 3 workers, use the following command:
 
 ----
 ibmcloud ks cluster create classic \
-  --name cloud-native \
+  --name mycluster-free \
   --zone fra02 \
   --flavor b3c.4x16 \
   --workers 3
@@ -102,7 +102,7 @@ NOTE: If the command fails because you have existing VLANs in that zone, you nee
 ----
 ibmcloud ks vlans --zone fra02
 ibmcloud ks cluster create classic \
-  --name cloud-native \
+  --name mycluster-free \
   --zone fra02 \
   --flavor b3c.4x16 \
   --workers 3 \
@@ -122,18 +122,18 @@ This command should now show your cluster which is being created.
 After the cluster is up-and-running, download the configuration file and certificates for the cluster using the `cluster config` command:
 
 ----
-ibmcloud ks cluster config --cluster cloud-native
+ibmcloud ks cluster config --cluster mycluster-free
 ----
 
 Get basic information about the cluster and its worker nodes.
 This information can help you managing the cluster and troubleshoot issues.
 
-Get the details of your cluster: `ibmcloud ks cluster get --cluster cloud-native`
+Get the details of your cluster: `ibmcloud ks cluster get --cluster mycluster-free`
 
 Verify the nodes in the cluster:
 
 ----
-ibmcloud ks workers --cluster cloud-native
+ibmcloud ks workers --cluster mycluster-free
 kubectl get nodes
 ----
 
@@ -151,7 +151,7 @@ Now, we're installing Istio:
 istioctl manifest apply --set profile=demo
 ----
 
-This will install Istio 1.4.0 with distributed tracing, Grafana monitoring, and Kiali.
+This will install Istio.
 
 Check that all pods are running before continuing.
 
@@ -159,7 +159,7 @@ Check that all pods are running before continuing.
 kubectl get pod -n istio-system
 ----
 
-Install addons:
+Install addons (distributed tracing, Grafana monitoring, and Kiali):
 ----
 cd /opt/istio-1.9.4/
 kubectl apply -f samples/addons

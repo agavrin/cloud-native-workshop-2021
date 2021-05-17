@@ -157,6 +157,12 @@ spec:
 EOF
 ----
 
+Apply all changes with
+----
+kubectl apply -f coffee-shop/deployment/
+kubectl apply -f barista/deployment/
+----
+
 ==== Accessing our applications
 
 If we now want to run our application and access it through the service mesh, we will access the gateway from outside the cluster.
@@ -172,7 +178,7 @@ kubectl get services -n istio-system istio-ingressgateway
 We can get the HTTP/2 node port directly by using the following Go template:
 
 ----
-kubectl get services -n istio-system istio-ingressgateway --template '{{range .spec.ports}}{{if eq .name "http2"}}{{.nodePort}}{{end}}{{end}}'
+export PORT=$(kubectl get services -n istio-system istio-ingressgateway --template '{{range .spec.ports}}{{if eq .name "http2"}}{{.nodePort}}{{end}}{{end}}'); echo $PORT
 ----
 
 [NOTE]
@@ -180,20 +186,20 @@ kubectl get services -n istio-system istio-ingressgateway --template '{{range .s
 As a reminder, as seen in the last section, we'll retrieve the node IP address with one of the following commands.
 
 ----
-ibmcloud ks workers --cluster cloud-native
+ibmcloud ks workers --cluster mycluster-free
 ----
 
 If you have the `jq` CLI tool installed, you can also directly extract the IP address by invoking:
 
 ----
-ibmcloud ks workers --cluster cloud-native --json | jq -r '.[0].publicIP'
+export IP=$(ibmcloud ks workers --cluster mycluster-free --json | jq -r '.[0].publicIP'); echo $IP
+export URL="$IP:$PORT"; echo $URL
 ----
 ====================
 
 We can then access the service using the node IP address and the node port of the `istio-ingressgateway` service:
 
 ----
-export URL=<IP>:<PORT>
 curl $URL/health | jq
 ...
 curl $URL/coffee-shop/resources/orders -i

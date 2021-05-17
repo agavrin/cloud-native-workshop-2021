@@ -99,6 +99,15 @@ Thus we make sure that our applications will be reachable under logical names, s
 
 For locally running container, we can assign names to the running containers that are resolvable within other containers that run inside the same local Docker network.
 This requires to specify both the container names and the network at runtime.
+
+Check if you have any containers running:
+
+----
+docker ps
+----
+
+If you have any containers running,
+
 We start our containers as follows:
 
 ----
@@ -116,6 +125,12 @@ docker run --rm -d \
 
 These commands run our two applications as Docker containers.
 The `--rm` flag will remove the containers after they have been stopped, `-d` runs the containers in the background, `--name` specifies the logical container names, `--network` makes sure both containers will run in the correct network, and the `-p` declarations forward the local containers ports to the localhost.
+
+To start from scratch, you can kill all running docker containers with
+
+----
+docker kill $(docker ps -q)
+----
 
 The two running containers can now resolve and access each other by their logical container names, which allows our coffee-shop application to connect to the barista backend using the `barista` host name.
 The reason why we're doing this, is because Kubernetes will support a very similar resolution of logical names.

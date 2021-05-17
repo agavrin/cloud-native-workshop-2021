@@ -97,6 +97,8 @@ Now, have a look at the resulting deployment definition (repeat the same for cof
 
 [source,yaml]
 ----
+cd coffee-shop/deployment
+
 export APPNAME=coffee-shop
 cat <<EOF >>$APPNAME.yaml
 kind: Deployment
@@ -222,7 +224,7 @@ If we have created a lite cluster we have to connect to our application via the 
 Therefore, we retrieve the public IP address of our cluster:
 
 ----
-ibmcloud ks workers --cluster cloud-native
+ibmcloud ks workers --cluster mycluster-free
 ID         Public IP       Private IP      Machine Type   State    Status   Zone    Version
 kube-xxx   159.122.186.7   10.144.188.64   free           normal   Ready    mil01   1.10.12_1541
 ----
@@ -268,7 +270,7 @@ data:
 EOF
 ----
 
-This defines the config map `coffee-config`, which contains the property `location` with the value `CEE`.
+This defines the config map `coffee-config`, which contains the property `location` with the value `Russia`.
 
 In order to make that property available to the running pods later on, we include the value in our Kubernetes deployment definition:
 
@@ -316,7 +318,7 @@ EOF
 
 The above example maps the config map values to environment variables in the pods.
 As MicroProfile Config ships with a default config source for environment variables, this property will automatically be available to our application.
-Thus, the injected value for the `location` will be the enum value `CEE`.
+Thus, the injected value for the `location` will be the enum value `Russia`.
 
 You can have a look at the coffee order locations under the resource for single coffee orders.
 You retrieve the URL of a single coffee order from the response of all orders:
