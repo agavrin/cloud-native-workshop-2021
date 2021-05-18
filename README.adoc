@@ -6,6 +6,16 @@ It comprises two applications, _coffee-shop_ and _barista_, built by Java EE and
 
 The contents of the workshop start with the link:workshop/00-prerequisites.adoc[prerequisites].
 
+Please use the following steps prior to the lab:
+
+1. Register in IBM cloud (https://cloud.ibm.com/registration)
+
+2. Convert your account to Trial by requesting coupon at https://ibm.biz/cloudcoupon and applying coupon to your Lite Account
+
+3. Request your free IKS cluster in IBM Cloud (instructions are link:workshop/00-prerequisites.adoc[here])
+
+4. Request credentials to VM with all IBM Cloud tools, maven and java installed: https://workshop-resources.eu-de.mybluemix.net?wi=istio202105
+
 === Finish
 
 After you've finished the walk-through you can compare your result with the https://github.com/agavrin/cloud-native-workshop-2021/tree/finish[finished version^].
