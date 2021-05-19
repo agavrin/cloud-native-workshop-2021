@@ -97,7 +97,7 @@ Now, have a look at the resulting deployment definition (repeat the same for cof
 
 [source,yaml]
 ----
-cd coffee-shop/deployment
+cd ~/cloud-native-workshop*/coffee-shop/deployment
 
 export APPNAME=coffee-shop
 cat <<EOF >>$APPNAME.yaml
@@ -141,6 +141,7 @@ Now, we finally want to create these resources in our Kubernetes cluster.
 We simply apply the files with the `kubectl apply` command:
 
 ----
+cd ~/cloud-native-workshop*/
 kubectl apply -f coffee-shop/deployment/
 kubectl apply -f barista/deployment/
 ----
@@ -172,6 +173,8 @@ Let's have a look at the coffee-shop service definition (you will have to create
 
 ----
 export APPNAME=coffee-shop
+
+cd ~/cloud-native-workshop*/$APPNAME/deployment/
 cat <<EOF >$APPNAME-service.yaml
 kind: Service
 apiVersion: v1
@@ -202,6 +205,7 @@ Again, make sure that the name, label, and selector definition match either the 
 We create these resources on the cluster as well, by issuing the same commands like before:
 
 ----
+cd ~/cloud-native-workshop*/
 kubectl apply -f coffee-shop/deployment/
 kubectl apply -f barista/deployment/
 ----
@@ -260,6 +264,7 @@ We create the following Kubernetes YAML definition:
 
 [source,yaml]
 ----
+cd ~/cloud-native-workshop*/coffee-shop/deployment/
 cat <<EOF >>configmap.yaml
 kind: ConfigMap
 apiVersion: v1
@@ -277,6 +282,8 @@ In order to make that property available to the running pods later on, we includ
 [source,yaml]
 ----
 export APPNAME=coffee-shop
+
+cd ~/cloud-native-workshop*/$APPNAME/deployment/
 cat <<EOF >$APPNAME.yaml
 kind: Deployment
 apiVersion: apps/v1

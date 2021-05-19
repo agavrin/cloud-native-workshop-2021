@@ -20,6 +20,8 @@ We create an Istio virtual service for the *barista* application:
 
 [source,yaml]
 ----
+cd ~/cloud-native-workshop*/barista/deployment/
+
 cat <<EOF >barista-routing.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -51,6 +53,8 @@ We create a destination rule for the barista application which defines the subse
 
 [source,yaml]
 ----
+cd ~/cloud-native-workshop*/barista/deployment/
+
 cat <<EOF >>barista-routing.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
@@ -87,6 +91,8 @@ We create an Istio routing definition with the following contents to define a ga
 
 [source,yaml]
 ----
+cd ~/cloud-native-workshop*/coffee-shop/deployment/
+
 cat <<EOF >coffee-shop-gateway.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -112,6 +118,8 @@ This will be part of the coffee-shop's virtual service specification:
 
 [source,yaml]
 ----
+cd ~/cloud-native-workshop*/coffee-shop/deployment/
+
 cat <<EOF >coffee-shop-virtualservice.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -142,6 +150,8 @@ The following contents define the resource for the coffe-shop destination rule, 
 
 [source,yaml]
 ----
+cd ~/cloud-native-workshop*/coffee-shop/deployment/
+
 cat <<EOF >coffee-shop-destinationrule.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
@@ -159,6 +169,8 @@ EOF
 
 Apply all changes with
 ----
+cd ~/cloud-native-workshop*/
+
 kubectl apply -f coffee-shop/deployment/
 kubectl apply -f barista/deployment/
 ----

@@ -29,6 +29,8 @@ We'll enhance our coffee-shop virtual service rules with a timeout of 1 second:
 
 [source,yaml]
 ----
+cd ~/cloud-native-workshop*/coffee-shop/deployment/
+
 cat <<EOF >coffee-shop-virtualservice.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -68,8 +70,10 @@ We can instruct the routing rules to add these fault scenarios, if required only
 
 We modify the barista virtual service to add a 3 seconds delay for 50% of the requests:
 
-[source,yaml]
+[source, yaml]
 ----
+cd ~/cloud-native-workshop*/barista/deployment/
+
 cat <<EOF >barista-service.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -93,6 +97,12 @@ EOF
 
 If we apply this updated resource to the cluster, we will notice that some of the connections will in fact fail, after roughly 1 second.
 We don't see any request taking the whole 3 seconds, due to the timeout on the coffee-shop routing rules:
+
+----
+cd ~/cloud-native-workshop*/barista/deployment/
+
+kubectl apply -f .
+----
 
 ----
 while true; do

@@ -18,7 +18,7 @@ To get started, clone the Git repository and use the projects that are provided 
 
 ----
 git clone https://github.com/agavrin/cloud-native-workshop-2021
-cd cloud-native-workshop-2021/
+cd cloud-native-workshop-*/
 ----
 
 
@@ -32,6 +32,8 @@ Both microservice projects contains a `pom.xml` file, which defines the project 
 To begin, we build both microservice applications by navigating to the corresponding directories and issuing the Maven build command:
 
 ----
+cd ~/cloud-native-workshop*
+
 cd coffee-shop/
 mvn package
 

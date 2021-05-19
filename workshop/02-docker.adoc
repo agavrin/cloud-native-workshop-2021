@@ -9,6 +9,7 @@ Therefore, we create two `Dockerfile` files, one under each project directory.
 In order to fetch the required dependencies, we need to execute the following scripts once:
 
 ----
+cd ~/cloud-native-workshop*/
 coffee-shop/liberty/prepare.sh
 barista/liberty/prepare.sh
 ----
@@ -18,6 +19,8 @@ Under `coffee-shop/`, we create a `Dockerfile` with the following contents:
 
 [source,Dockerfile]
 ----
+cd ~/cloud-native-workshop*/coffee-shop
+
 cat <<EOF >Dockerfile
 FROM open-liberty:21.0.0.4-full-java8-openj9
 
@@ -44,6 +47,8 @@ Now, we create a similar `Dockerfile` for the barista application, under `barist
 
 [source,Dockerfile]
 ----
+cd ~/cloud-native-workshop*/barista
+
 cat <<EOF >Dockerfile
 FROM open-liberty:21.0.0.4-full-java8-openj9
 
@@ -68,6 +73,7 @@ export PORT=9080
 For the coffee-shop application this looks as follows:
 
 ----
+cd ~/cloud-native-workshop*/
 cd coffee-shop/
 docker build -t de.icr.io/cee-$NAME-workshop/coffee-shop:1 .
 ----
@@ -80,7 +86,8 @@ The `de.icr.io/...` part indicates the used cloud service and our user name and 
 Again, we repeat this step for the barista application:
 
 ----
-cd ../barista/
+cd ~/cloud-native-workshop*/
+cd barista/
 docker build -t de.icr.io/cee-$NAME-workshop/barista:1 .
 ----
 

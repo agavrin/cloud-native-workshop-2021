@@ -169,6 +169,7 @@ kubectl rollout status deployment/kiali -n istio-system
 We can verify our Istio installation as follows:
 
 ----
+cd ~
 istioctl manifest generate --set profile=demo > generated-manifest.yaml
 istioctl verify-install -f generated-manifest.yaml
 ----

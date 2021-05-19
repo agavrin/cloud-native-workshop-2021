@@ -28,6 +28,7 @@ private JsonObject buildOrder(CoffeeOrder order) {
 ----
 
 ----
+cd ~/cloud-native-workshop*/coffee-shop/
 export NAME=<your name>
 mvn package
 docker build -t de.icr.io/cee-$NAME-workshop/coffee-shop:2 .
@@ -40,6 +41,8 @@ We create a new deployment definition that will deploy our new coffee-shop appli
 
 [source,yaml]
 ----
+cd ~/cloud-native-workshop*/coffee-shop/deployment/
+
 cat <<EOF >coffee-shop-v2.yaml
 kind: Deployment
 apiVersion: apps/v1
@@ -92,6 +95,8 @@ To add a second version of our coffee-shop service we enhance the coffee-shop de
 
 [source,yaml]
 ----
+cd ~/cloud-native-workshop*/coffee-shop/deployment/
+
 cat <<EOF >coffee-shop-destinationrule.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
@@ -121,6 +126,8 @@ We enhance the routing rule to route to subset `v2` as well, but only for traffi
 
 [source,yaml]
 ----
+cd ~/cloud-native-workshop*/coffee-shop/deployment/
+
 cat <<EOF >coffee-shop-virtualservice.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -176,6 +183,8 @@ To begin incrementally routing traffic to the newer version of the coffee-shop s
 
 [source,yaml]
 ----
+cd ~/cloud-native-workshop*/coffee-shop/deployment/
+
 cat <<EOF >coffee-shop-virtualservice.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
