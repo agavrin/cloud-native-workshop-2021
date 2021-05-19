@@ -81,7 +81,7 @@ A free cluster is sufficient for this workshop but feel free to create a standar
 
 If you want to use the CLI continue with one of the following:
 
-For a Free cluster use the following command:
+For a Free cluster use the following command to create cluster (IF YOU DO NOT HAVE CLUSTER CREATED YET VIA BROWSER):
 
 ----
 ibmcloud ks cluster create classic  \
