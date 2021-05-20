@@ -4,8 +4,6 @@ This is the coffee shop example project for the hands-on-lab: _Build Your Micros
 
 It comprises two applications, _coffee-shop_ and _barista_, built by Java EE and MicroProfile, which are deployed to a Kubernetes and Istio cluster.
 
-The contents of the workshop start with the link:workshop/00-prerequisites.adoc[prerequisites].
-
 Please use the following steps prior to the lab:
 
 1. Register in IBM cloud (https://cloud.ibm.com/registration)
@@ -15,6 +13,8 @@ Please use the following steps prior to the lab:
 3. Request your free IKS cluster in IBM Cloud (instructions are link:workshop/00-prerequisites.adoc[here])
 
 4. Request credentials to VM with all IBM Cloud tools, maven and java installed: https://workshop-resources.eu-de.mybluemix.net?wi=istio202105
+
+The contents of the workshop starts with the link:workshop/00-prerequisites.adoc[prerequisites].
 
 === Finish
 
