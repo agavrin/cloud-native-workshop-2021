@@ -80,6 +80,13 @@ EOF
 Pods managed by this deployment will receive the labels `app: coffee-shop` and `version: v2`.
 The coffee-shop service would simply forward requests to this pod as well, however, since our traffic is routed by the Istio proxies, only the previous instances will receive traffic for now.
 
+Apply all changes with
+----
+cd ~/cloud-native-workshop*/
+kubectl apply -f coffee-shop/deployment/
+----
+
+
 We ensure that our new deployment and pods have been created:
 
 ----
@@ -115,6 +122,11 @@ EOF
 ----
 
 We apply the updated destination rule to the cluster.
+----
+cd ~/cloud-native-workshop*/
+kubectl apply -f coffee-shop/deployment/
+----
+
 As you will notice, this will have no effect on the current scenario.
 If you have a look at the current coffee-shop virtual service, you'll notice that we route all incoming traffic to `v1` subset:
 
@@ -157,6 +169,11 @@ spec:
         subset: v1
 ---
 EOF
+----
+
+----
+cd ~/cloud-native-workshop*/
+kubectl apply -f coffee-shop/deployment/
 ----
 
 The newly introduce rule will route the traffic from Firefox browsers to all instances that are contained in the `v2` service subset and leave the rest untouched, that is, everything else still routes to the `v1` subset.
@@ -212,6 +229,13 @@ spec:
 ---
 EOF
 ----
+
+
+----
+cd ~/cloud-native-workshop*/
+kubectl apply -f coffee-shop/deployment/
+----
+
 
 In this modified rule, the routed traffic is split between the two subsets of the coffee-shop service (70% to `v1` and 30% to `v2`).
 Traffic to the modernized version of our service is controlled on a percentage basis to limit the impact of any unforeseen bugs.

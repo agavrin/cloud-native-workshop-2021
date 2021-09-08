@@ -71,7 +71,7 @@ ibmcloud login --apikey <yourkey> -r eu-de
 ----
 
 To verify that the plugins are installed properly, run `ibmcloud plugin list`.
-The Container Service plugin and Registry plugin are displayed as `container-service/kubernetes-service` and `container-registry`.
+The Container Service plugin and Registry plugin are displayed as `container-service[kubernetes-service]` and `container-registry`.
 
 
 === IBM Kubernetes Service

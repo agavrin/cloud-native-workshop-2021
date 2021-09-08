@@ -47,10 +47,22 @@ spec:
         host: coffee-shop
         port:
           number: 9080
+        subset: v2
+      weight: 30
+    - destination:
+        host: coffee-shop
+        port:
+          number: 9080
         subset: v1
+      weight: 70
     timeout: 1s
 ---
 EOF
+----
+
+----
+cd ~/cloud-native-workshop*/
+kubectl apply -f coffee-shop/deployment/
 ----
 
 NOTE: The `timeout` definition is contained in a specific route YAML object and will only be taken into account on that very rule.

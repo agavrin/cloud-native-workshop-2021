@@ -33,15 +33,24 @@ In order to access the monitoring dashboards, we have to establish a connection 
 
 We could either create a dedicated service, and gateway that route to the pod, but for testing purposes, we establish a port forwarding from local port `3000` to the Grafana pod:
 
+If you run the script on a remote VM, you can map your ports with a command
+----
+ssh -L 10001:localhost:10001 -L 20001:localhost:20001 -L 30001:localhost:30001 root@158.177.16.133
+----
+
+Note that you will have to login to your kubernetes cluster first again, for another VM instance:
+----
+ibmcloud login --apikey  NcYoh457_XV-HeFEaNfrL54Ng3Zf3LGdGCLLdbBWiYMr -r eu-de
+ibmcloud ks cluster config --cluster  mycluster-free
+ibmcloud cr login
+ibmcloud cr region-set eu-central
+----
+
+
 ----
 kubectl -n istio-system port-forward \
   $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') \
   10001:3000 &
-----
-
-If you run the script on a remote VM, you can map your ports with a command
-----
-ssh -L 10001:localhost:10001 -L 20001:localhost:20001 -L 30001:localhost:30001 root@158.177.16.133
 ----
 
 Once that forwarding is established, we browse to http://localhost:10001 and navigate to the Istio Mesh Dashboard by clicking on the Home menu on the top left.
