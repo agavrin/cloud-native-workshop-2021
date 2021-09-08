@@ -3,8 +3,8 @@
 
     <featureManager>
         <feature>jakartaee-8.0</feature>
-        <feature>microProfile-3.0</feature>
-        <feature>usr:opentracingZipkin-0.31</feature>
+        <feature>microProfile-4.0</feature>
+        <feature>usr:opentracingZipkin-0.33</feature>
     </featureManager>
 
     <basicRegistry id="basic" realm="MicroProfileMetrics">
