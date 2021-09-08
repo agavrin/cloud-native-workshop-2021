@@ -39,7 +39,12 @@ kubectl -n istio-system port-forward \
   10001:3000 &
 ----
 
-Once that forwarding is established, we browse to http://localhost:3000 and navigate to the Istio Mesh Dashboard by clicking on the Home menu on the top left.
+If you run the script on a remote VM, you can map your ports with a command
+----
+ssh -L 10001:localhost:10001 -L 20001:localhost:20001 -L 30001:localhost:30001 root@158.177.16.133
+----
+
+Once that forwarding is established, we browse to http://localhost:10001 and navigate to the Istio Mesh Dashboard by clicking on the Home menu on the top left.
 
 You can explore all technical metrics that have been made available in Istio by default.
 

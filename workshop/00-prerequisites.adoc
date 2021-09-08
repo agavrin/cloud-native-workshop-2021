@@ -161,7 +161,7 @@ kubectl get pod -n istio-system
 
 Install addons (distributed tracing, Grafana monitoring, and Kiali):
 ----
-cd /opt/istio-1.9.4/
+cd /opt/istio-1.11.2/
 kubectl apply -f samples/addons
 kubectl rollout status deployment/kiali -n istio-system
 ----
@@ -177,9 +177,9 @@ istioctl verify-install -f generated-manifest.yaml
 The result of the second command (last 3 lines) looks like this:
 
 ----
-Checked 23 crds
-Checked 9 Istio Deployments
-Istio is installed successfully
+Checked 13 custom resource definitions
+Checked 3 Istio Deployments
+✔ Istio is installed and verified successfully
 ----
 
 We then enable the automatic sidecar injection:
