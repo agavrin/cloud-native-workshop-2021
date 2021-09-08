@@ -3,7 +3,7 @@
 
     <featureManager>
         <feature>jakartaee-8.0</feature>
-        <feature>microProfile-4.1</feature>
+        <feature>microProfile-4.0</feature>
         <feature>usr:opentracingZipkin-0.33</feature>
     </featureManager>
 
