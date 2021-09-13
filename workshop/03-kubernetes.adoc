@@ -1,7 +1,7 @@
 == Kubernetes
 
 In order to run our applications on a Kubernetes cluster, we will need to create a few resources.
-Ultimately, we define our environment declaratively, using Infrastructure-as-Code, similar to what we did using the `Dockerfile` files, but this time for the whole environment.
+Ultimately, we define our environment declaratively, using Infrastructure-as-Code, similar to what we did using the `podmanfile` files, but this time for the whole environment.
 Thus, we want to define how many replicas of our individual application images we want to run, how they are connected and configured, etc.
 All of that as code which should reside in our project.
 
@@ -11,7 +11,7 @@ Let's examine the resources we need to create.
 
 A pod is the atomic workload inside Kubernetes clusters.
 It is an abstraction over our application instance and contains _usually_ a single container.
-That is, that the Docker containers we had in the last part will now run inside Kubernetes pods, one pod per container instance.
+That is, that the podman containers we had in the last part will now run inside Kubernetes pods, one pod per container instance.
 If we want to have multiple replicas of our applications, we create multiple pods.
 
 For your information, the following shows a snippet of a YAML pod definition.
@@ -33,7 +33,7 @@ spec:
 # ...
 ----
 
-The snippet defines the specification of one pod that should contain a single container which is created from our coffee-shop Docker image.
+The snippet defines the specification of one pod that should contain a single container which is created from our coffee-shop podman image.
 
 Kubernetes pods are mortal and once they terminate, they are usually not re-started, but recreated.
 To make sure that we don't have to recreate the pod resources manually, we use controllers that manage a desired number of pod replicas for us, here Kubernetes deployments.
@@ -72,7 +72,7 @@ This definition looks similar to the pod snippet before, but it encapsulates the
 The deployment will ensure that the desired number of replicas will be met.
 If a pod is terminated, whether deliberately or not, the deployment will automatically create a replacement, that is a new pod.
 
-If we want to scale our application, change the deployment definition in another way, or deploy a different version (that is Docker image), we simply change the YAML definition and update it against the cluster.
+If we want to scale our application, change the deployment definition in another way, or deploy a different version (that is podman image), we simply change the YAML definition and update it against the cluster.
 Kubernetes will try to make sure that the new changes will be reflected, while keeping the disruption minimal.
 It ships with zero-downtime deployment support out of the box.
 
@@ -347,7 +347,7 @@ curl $URL/coffee-shop/resources/orders/<order-uuid>
 
 The https://12factor.net/[12 factors^] of modern software-as-a-service applications describe what aspects developers should take into account.
 Have a look at the described factors and contemplate, where we've already covered these aspects by using Enterprise Java with cloud-native technologies.
-With MicroProfile and its programming model, combined with Docker and Kubernetes, we can easily build 12-factor microservices.
+With MicroProfile and its programming model, combined with containers and Kubernetes, we can easily build 12-factor microservices.
 We'll discuss the impact of the 12 factors together.
 
 Now, we've setup a Kubernetes environment that orchestrates our microservices.

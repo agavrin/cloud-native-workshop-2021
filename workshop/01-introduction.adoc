@@ -50,8 +50,8 @@ These WAR files will be deployed to our application containers.
 === Running
 
 In order to run our applications, we could deploy them to (locally) running application containers.
-However, since we aim to run in a cloud-native setting, we will deploy the applications as Linux containers, here using Docker.
+However, since we aim to run in a cloud-native setting, we will deploy the applications as Linux containers, here using Podman.
 
-In order to run Docker containers, we need to create corresponding Docker images, which contain everything that our applications need to just start-up and run.
+In order to run Podman containers, we need to create corresponding Podman images, which contain everything that our applications need to just start-up and run.
 
-Let's see how we can achieve that in the link:02-docker.adoc[next section].
+Let's see how we can achieve that in the link:02-podman.adoc[next section].

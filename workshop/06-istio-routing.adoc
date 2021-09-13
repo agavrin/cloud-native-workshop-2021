@@ -18,6 +18,8 @@ The orders resource currently returns the coffee type in all-caps, since that is
 We now change the Java code in the `OrdersResource` class to output the coffee type in lower case.
 
 ----
+cd ~/cloud-native-workshop*/coffee-shop/src/main/java/com/sebastian_daschner/coffee_shop/boundary/
+
 private JsonObject buildOrder(CoffeeOrder order) {
         return Json.createObjectBuilder()
                 .add("type", order.getType().name().toLowerCase())
@@ -31,11 +33,11 @@ private JsonObject buildOrder(CoffeeOrder order) {
 cd ~/cloud-native-workshop*/coffee-shop/
 export NAME=<your name>
 mvn package
-docker build -t de.icr.io/cee-$NAME-workshop/coffee-shop:2 .
-docker push de.icr.io/cee-$NAME-workshop/coffee-shop:2
+podman build -t de.icr.io/cee-$NAME-workshop/coffee-shop:2 .
+podman push de.icr.io/cee-$NAME-workshop/coffee-shop:2
 ----
 
-Once we've re-built the Maven project, we build the coffee-shop Docker image, now with name `coffee-shop:2`.
+Once we've re-built the Maven project, we build the coffee-shop podman image, now with name `coffee-shop:2`.
 
 We create a new deployment definition that will deploy our new coffee-shop application, with and leave the previous one untouched:
 
