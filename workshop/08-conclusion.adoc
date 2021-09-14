@@ -14,5 +14,6 @@ Now, take your learnings further and go build something cool!
 
 === Further resources
 
+- https://docs.docker.com/engine/reference/builder/[Dockerfile reference^]
 - https://kubernetes.io/docs/home/[Kubernetes documentation^]
 - https://istio.io/docs/[Istio docs^]

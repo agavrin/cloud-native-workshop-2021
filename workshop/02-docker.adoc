@@ -1,10 +1,10 @@
-== podman
+== Docker
 
-In order to run our applications in podman containers, we need podman images first which are built from ``podmanfile``s.
-Therefore, we create two `podmanfile` files, one under each project directory.
+In order to run our applications in Docker containers, we need Docker images first which are built from ``Dockerfile``s.
+Therefore, we create two `Dockerfile` files, one under each project directory.
 
 
-=== podman images
+=== Docker images
 
 In order to fetch the required dependencies, we need to execute the following scripts once:
 
@@ -15,14 +15,14 @@ barista/liberty/prepare.sh
 ----
 
 Let's start with the coffee-shop application.
-Under `coffee-shop/`, we create a `podmanfile` with the following contents:
+Under `coffee-shop/`, we create a `Dockerfile` with the following contents:
 
-[source,podmanfile]
+[source,Dockerfile]
 ----
 cd ~/cloud-native-workshop*/coffee-shop
 
-cat <<EOF >podmanfile
-FROM podman.io/library/open-liberty:21.0.0.4-full-java8-openj9
+cat <<EOF >Dockerfile
+FROM open-liberty:21.0.0.4-full-java8-openj9
 
 COPY liberty/extension /liberty/usr/extension/
 COPY liberty/server.xml /config/
@@ -43,14 +43,14 @@ Since we deploy only a single applications to each running server and thus runni
 
 Take a moment to have a brief look at the `liberty/server.xml` file.
 We'll come back to it later.
-Now, we create a similar `podmanfile` for the barista application, under `barista/`:
+Now, we create a similar `Dockerfile` for the barista application, under `barista/`:
 
-[source,podmanfile]
+[source,Dockerfile]
 ----
 cd ~/cloud-native-workshop*/barista
 
-cat <<EOF >podmanfile
-FROM podman.io/library/open-liberty:21.0.0.4-full-java8-openj9
+cat <<EOF >Dockerfile
+FROM open-liberty:21.0.0.4-full-java8-openj9
 
 COPY liberty/extension /liberty/usr/extension/
 COPY liberty/server.xml /config/
@@ -62,7 +62,7 @@ EOF
 
 === Building
 
-In order to build the images, we issue the following podman command: `podman build -t <image>:<tag> .` (including the dot at the end).
+In order to build the images, we issue the following Docker command: `docker build -t <image>:<tag> .` (including the dot at the end).
 
 Let's setup a variable to have your name, to be used as unique identifier, also provide unique port number:
 ----
@@ -75,11 +75,11 @@ For the coffee-shop application this looks as follows:
 ----
 cd ~/cloud-native-workshop*/
 cd coffee-shop/
-podman build -t de.icr.io/cee-$NAME-workshop/coffee-shop:1 .
+docker build -t de.icr.io/cee-$NAME-workshop/coffee-shop:1 .
 ----
 
 The image name, here `de.icr.io/cee-<your-name>-workshop/coffee-shop:1`, implicitly contains the location of the image registry, image name, and version (or tag).
-If an image with that name is being pulled or pushed, downloaded or uploaded, respectively, podman thus already knows the destination.
+If an image with that name is being pulled or pushed, downloaded or uploaded, respectively, Docker thus already knows the destination.
 
 The `de.icr.io/...` part indicates the used cloud service and our user name and namespace.
 
@@ -88,15 +88,15 @@ Again, we repeat this step for the barista application:
 ----
 cd ~/cloud-native-workshop*/
 cd barista/
-podman build -t de.icr.io/cee-$NAME-workshop/barista:1 .
+docker build -t de.icr.io/cee-$NAME-workshop/barista:1 .
 ----
 
-Congratulations, now we have two images stored locally, for the coffee-shop and barista applications that we can now run as podman containers!
+Congratulations, now we have two images stored locally, for the coffee-shop and barista applications that we can now run as Docker containers!
 
 
 === Running
 
-If we want, we can already run the created podman images locally on our machines.
+If we want, we can already run the created Docker images locally on our machines.
 
 In order do to that, we have to keep in mind, that the coffee-shop application will connect to the barista backend, thus needs to resolve and access the second running container.
 If we have a look at the source code of the coffee-shop application, specifically the `Barista` gateway, we notice that the application will simply connect to `http://barista:9080` -- host name `barista`.
@@ -104,13 +104,13 @@ If we have a look at the source code of the coffee-shop application, specificall
 This will be possible since we specify that our microservices will run in a cloud-native environment, where we can control the environment independent of the applications.
 Thus we make sure that our applications will be reachable under logical names, such as `coffee-shop` or `barista`.
 
-For locally running container, we can assign names to the running containers that are resolvable within other containers that run inside the same local Podman network.
+For locally running container, we can assign names to the running containers that are resolvable within other containers that run inside the same local Docker network.
 This requires to specify both the container names and the network at runtime.
 
 Check if you have any containers running:
 
 ----
-podman ps
+docker ps
 ----
 
 If you have any containers running,
@@ -118,25 +118,25 @@ If you have any containers running,
 We start our containers as follows:
 
 ----
-podman run --rm -d \
+docker run --rm -d \
   --name barista \
-  --network podmannet \
+  --network dkrnet \
   de.icr.io/cee-$NAME-workshop/barista:1
 
-podman run --rm -d \
+docker run --rm -d \
   --name coffee-shop \
-  --network podmannet \
+  --network dkrnet \
   -p $PORT:9080 \
   de.icr.io/cee-$NAME-workshop/coffee-shop:1
 ----
 
-These commands run our two applications as Podman containers.
+These commands run our two applications as Docker containers.
 The `--rm` flag will remove the containers after they have been stopped, `-d` runs the containers in the background, `--name` specifies the logical container names, `--network` makes sure both containers will run in the correct network, and the `-p` declarations forward the local containers ports to the localhost.
 
-To start from scratch, you can kill all running podman containers with
+To start from scratch, you can kill all running docker containers with
 
 ----
-podman kill $(podman ps -q)
+docker kill $(docker ps -q)
 ----
 
 The two running containers can now resolve and access each other by their logical container names, which allows our coffee-shop application to connect to the barista backend using the `barista` host name.
@@ -178,7 +178,7 @@ This shows the example for the barista application.
 For our coffee shop example please adjust the strings accordingly.
 
 That's it!
-However, if we want these changes to be included in our running containers, we need to re-build the Java applications and the Podman images again, of course.
+However, if we want these changes to be included in our running containers, we need to re-build the Java applications and the Docker images again, of course.
 
 After the applications have been started, we should be able to access the coffee shop via the local port `9080` and the default MicroProfile health resource:
 
@@ -218,28 +218,28 @@ Sending this command hopefully yields us a successful `201 Created` response, th
 We can double-check this by querying the resource for all coffee orders again, similar to before, which now should respond with a JSON array that contains our order.
 
 If that's the case, congratulations!
-You've just built, run, and manually tested cloud-native microservices running in Podman containers.
+You've just built, run, and manually tested cloud-native microservices running in Docker containers.
 
 
 === Pushing
 
-In order to make our Podman images not just locally accessible, we will push them to a container registry in the cloud.
+In order to make our Docker images not just locally accessible, we will push them to a container registry in the cloud.
 Then we can later pull them from any environment, like a managed Kubernetes cluster.
 
-We push our Podman images with the following commands:
+We push our Docker images with the following commands:
 
 ----
-podman push de.icr.io/cee-$NAME-workshop/coffee-shop:1
-podman push de.icr.io/cee-$NAME-workshop/barista:1
+docker push de.icr.io/cee-$NAME-workshop/coffee-shop:1
+docker push de.icr.io/cee-$NAME-workshop/barista:1
 ----
 
 You will notice, that the second `push` commands runs much faster and outputs that almost all layers already exist in the remote repository.
-This thanks to the copy-on-write file system which podman uses internally and save us developers an enormous amount of time and bandwidth.
+This thanks to the copy-on-write file system which Docker uses internally and save us developers an enormous amount of time and bandwidth.
 The same is true for re-building images.
-podman recognizes which commands of the podman build need to be re-executed, and only performs these and the following.
+Docker recognizes which commands of the Docker build need to be re-executed, and only performs these and the following.
 
 This is the reason why especially for cloud-native applications it makes sense to craft thin deployment artifacts.
 The WAR files that comprise our applications only contain the business logic that is part of our application, no implementation details.
 The base image, i.e. the application server or its configuration doesn't change that frequently, therefore we're mostly shipping our (small) application only.
 
-Now, that our microservices are running as podman containers already, let's see how we bring Kubernetes into the game in the link:03-kubernetes.adoc[next section].
+Now, that our microservices are running as Docker containers already, let's see how we bring Kubernetes into the game in the link:03-kubernetes.adoc[next section].
