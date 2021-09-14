@@ -12,7 +12,7 @@ Please use the following steps prior to the lab:
 
 3. Request your free IKS cluster in IBM Cloud (instructions are link:workshop/00-prerequisites.adoc[here])
 
-4. Request credentials to VM with all IBM Cloud tools, maven and java installed: https://workshop-resources.eu-de.mybluemix.net?wi=istio202105
+4. Request credentials to VM with all IBM Cloud tools, maven and java installed: https://workshop-resources.eu-de.mybluemix.net?wi=istio202109
 
 The contents of the workshop starts with the link:workshop/00-prerequisites.adoc[prerequisites].
 

@@ -118,13 +118,7 @@ kubectl port-forward -n istio-system \
   30001:16686 &
 ----
 
-If you have your CLI running on remote server, you can map ports with the following command (use other window)
-
-----
-ssh -L 10001:localhost:10001 -L 20001:localhost:20001 -L 30001:localhost:30001 userx@158.177.16.139
-----
-
-We navigate our browser to http://localhost:16686, select `istio-ingressgateway` as service, and click on the '`Find Traces`' button to see the recent traces.
+We navigate our browser to http://localhost:10001, select `istio-ingressgateway` as service, and click on the '`Find Traces`' button to see the recent traces.
 
 If we examine the correct traces, we can see that our coffee-shop application synchronously and asynchronously connects to the barista backend.
 
